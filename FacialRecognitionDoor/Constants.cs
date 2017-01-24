@@ -10,7 +10,7 @@
 
         // Oxford Face API Primary should be entered here
         // You can obtain a subscription key for Face API by following the instructions here: https://www.microsoft.com/cognitive-services/en-us/sign-up
-        public const string OxfordAPIKey = "";
+        public const string OxfordAPIKey = "699de4882e2d422984565c9e2dc376c9";
         
         // Name of the folder in which all Whitelist data is stored
         public const string WhiteListFolderName = "Facial Recognition Door Whitelist";

@@ -10,7 +10,7 @@
     <PackageArchitecture>x86</PackageArchitecture>
     <PackageIdentityName>fc78a11d-a155-46d8-9ece-279bd886050b</PackageIdentityName>
     <PackageIdentityPublisher>CN=masatos</PackageIdentityPublisher>
-    <IntermediateOutputPath>C:\Users\Solving Team\Documents\Visual Studio 2015\Projects\Facial-Recognition-Door-develop\FacialRecognitionDoor\obj\x86\Debug\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\obj\x86\Debug\</IntermediateOutputPath>
     <RemoteDeploymentType>
     </RemoteDeploymentType>
     <PackageRegistrationPath>
@@ -25,16 +25,16 @@
     <JitOptimizationSuppressed>True</JitOptimizationSuppressed>
   </PropertyGroup>
   <ItemGroup>
-    <AppXManifest Include="C:\Users\Solving Team\Documents\Visual Studio 2015\Projects\Facial-Recognition-Door-develop\FacialRecognitionDoor\bin\x86\Debug\Core\AppxManifest.xml">
+    <AppXManifest Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-01-23T18:18:20.618</Modified>
+      <Modified>2017-01-24T15:50:54.838</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
-    <AppxPackagedFile Include="C:\Users\Solving Team\Documents\Visual Studio 2015\Projects\Facial-Recognition-Door-develop\FacialRecognitionDoor\bin\x86\Debug\FacialRecognitionDoor.exe">
+    <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\bin\x86\Debug\FacialRecognitionDoor.exe">
       <PackagePath>entrypoint\FacialRecognitionDoor.exe</PackagePath>
-      <Modified>2017-01-23T18:18:16.989</Modified>
+      <Modified>2017-01-24T15:50:38.577</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Solving Team\.nuget\packages\Microsoft.ApplicationInsights\1.0.0\lib\portable-win81+wpa81\Microsoft.ApplicationInsights.dll">
       <PackagePath>Microsoft.ApplicationInsights.dll</PackagePath>
@@ -468,49 +468,49 @@
       <PackagePath>System.Xml.XmlSerializer.dll</PackagePath>
       <Modified>2015-07-22T21:11:12.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Solving Team\Documents\Visual Studio 2015\Projects\Facial-Recognition-Door-develop\FacialRecognitionDoor\Assets\CameraIcon.png">
+    <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\Assets\CameraIcon.png">
       <PackagePath>Assets\CameraIcon.png</PackagePath>
       <Modified>2016-11-04T13:23:24.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Solving Team\Documents\Visual Studio 2015\Projects\Facial-Recognition-Door-develop\FacialRecognitionDoor\Assets\LockScreenLogo.scale-200.png">
+    <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\Assets\LockScreenLogo.scale-200.png">
       <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
       <Modified>2016-11-04T13:23:24.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Solving Team\Documents\Visual Studio 2015\Projects\Facial-Recognition-Door-develop\FacialRecognitionDoor\Assets\SplashScreen.scale-200.png">
+    <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\Assets\SplashScreen.scale-200.png">
       <PackagePath>Assets\SplashScreen.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
       <Modified>2016-11-04T13:23:24.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Solving Team\Documents\Visual Studio 2015\Projects\Facial-Recognition-Door-develop\FacialRecognitionDoor\Assets\Square150x150Logo.scale-200.png">
+    <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\Assets\Square150x150Logo.scale-200.png">
       <PackagePath>Assets\Square150x150Logo.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
       <Modified>2016-11-04T13:23:24.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Solving Team\Documents\Visual Studio 2015\Projects\Facial-Recognition-Door-develop\FacialRecognitionDoor\Assets\Square44x44Logo.scale-200.png">
+    <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\Assets\Square44x44Logo.scale-200.png">
       <PackagePath>Assets\Square44x44Logo.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
       <Modified>2016-11-04T13:23:24.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Solving Team\Documents\Visual Studio 2015\Projects\Facial-Recognition-Door-develop\FacialRecognitionDoor\Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+    <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
       <PackagePath>Assets\Square44x44Logo.targetsize-24_altform-unplated.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
       <Modified>2016-11-04T13:23:24.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Solving Team\Documents\Visual Studio 2015\Projects\Facial-Recognition-Door-develop\FacialRecognitionDoor\Assets\StoreLogo.png">
+    <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\Assets\StoreLogo.png">
       <PackagePath>Assets\StoreLogo.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
       <Modified>2016-11-04T13:23:24.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Solving Team\Documents\Visual Studio 2015\Projects\Facial-Recognition-Door-develop\FacialRecognitionDoor\Assets\Wide310x150Logo.scale-200.png">
+    <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\Assets\Wide310x150Logo.scale-200.png">
       <PackagePath>Assets\Wide310x150Logo.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
       <Modified>2016-11-04T13:23:24.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Solving Team\Documents\Visual Studio 2015\Projects\Facial-Recognition-Door-develop\FacialRecognitionDoor\Properties\Default.rd.xml">
+    <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\Properties\Default.rd.xml">
       <PackagePath>Properties\Default.rd.xml</PackagePath>
       <Modified>2016-11-04T13:23:24.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Solving Team\Documents\Visual Studio 2015\Projects\Facial-Recognition-Door-develop\FacialRecognitionDoor\bin\x86\Debug\FacialRecognitionDoor.xr.xml">
+    <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\bin\x86\Debug\FacialRecognitionDoor.xr.xml">
       <PackagePath>FacialRecognitionDoor.xr.xml</PackagePath>
       <Modified>2017-01-23T13:06:41.553</Modified>
     </AppxPackagedFile>
@@ -518,14 +518,14 @@
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
       <Modified>2017-01-23T12:34:55.592</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Solving Team\Documents\Visual Studio 2015\Projects\Facial-Recognition-Door-develop\FacialRecognitionDoor\bin\x86\Debug\resources.pri">
+    <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-01-23T13:06:49.302</Modified>
+      <Modified>2017-01-24T15:50:50.243</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Solving Team\Documents\Visual Studio 2015\Projects\Facial-Recognition-Door-develop\FacialRecognitionDoor\bin\x86\Debug\Core\FacialRecognitionDoor.exe">
+    <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\bin\x86\Debug\Core\FacialRecognitionDoor.exe">
       <PackagePath>FacialRecognitionDoor.exe</PackagePath>
-      <Modified>2017-01-23T18:18:20.602</Modified>
+      <Modified>2017-01-24T15:50:54.824</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
