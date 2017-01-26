@@ -38,7 +38,7 @@
             <TextBlock VerticalAlignment="Center" FontSize="21.333" Grid.Row="1" Text="This may take some time depending on your hardware." TextWrapping="WrapWholeWords" TextAlignment="Center" FontStyle="Italic"/>
 
         </StackPanel>
-        
+
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -55,8 +55,8 @@
             </GridView>
             <ProgressRing x:ConnectionId='9' x:Name="OxfordLoadingRing" Grid.Column="0" IsActive="True" Width="113" Height="80" Grid.RowSpan="2" Foreground="White"/>
         </Grid>
-        <TextBlock x:ConnectionId='5' x:Name="WelcomeBlock" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="Welcome to the Facial Recognition Door!" VerticalAlignment="Center" Grid.ColumnSpan="3" FontSize="53.333" Margin="50,0,50,100"/>
-        <TextBlock x:ConnectionId='6' x:Name="DetailsBlock" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="Press the + icon to add a whitelisted user and get started! When you're ready, hit the doorbell icon to try and unlock the door with your face!" VerticalAlignment="Center" Grid.ColumnSpan="3" FontSize="33.333" Margin="50,80,50,0" TextAlignment="Center"/>
+        <TextBlock x:ConnectionId='5' x:Name="benvenuto" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Grid.ColumnSpan="3" FontSize="33.333" Margin="50,80,50,0" TextAlignment="Center"/>
+        <Image x:ConnectionId='6' x:Name="UserImage" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="50"/>
     </Grid>
     <Page.BottomAppBar>
         <CommandBar IsOpen="True" IsSticky="True" IsEnabled="True" Foreground="#FF7C3C3C">

@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Navigation;
 using FacialRecognitionDoor.Helpers;
 using FacialRecognitionDoor.Objects;
 using Microsoft.ProjectOxford.Face;
+using Windows.UI.Xaml.Documents;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -212,6 +213,7 @@ namespace FacialRecognitionDoor
         /// </summary>
         private async void DoorbellButton_Click(object sender, RoutedEventArgs e)
         {
+            this.benvenuto.Inlines.Clear();
             if (!doorbellJustPressed)
             {
                 doorbellJustPressed = true;
@@ -271,6 +273,10 @@ namespace FacialRecognitionDoor
                 {
                     // Otherwise, inform user that they were not recognized by the system
                     await speech.Read(SpeechContants.VisitorNotRecognizedMessage);
+                    this.benvenuto.Inlines.Clear();
+                    //Run textRun = new Run();
+                    //textRun.Text = "Sconosciuto";
+                    this.benvenuto.Text = "Sei uno sconosciuto";
                 }
             }
             else
@@ -300,8 +306,29 @@ namespace FacialRecognitionDoor
         {
             // Greet visitor
             await speech.Read(SpeechContants.GeneralGreetigMessage(visitorName));
+            this.benvenuto.Inlines.Clear();
+            //Run textRun = new Run();
+            //textRun.Text = visitorName;
+            this.benvenuto.Text = "Welcome " + visitorName;
 
-            if(gpioAvailable)
+            var subFolders = await whitelistFolder.GetFoldersAsync();
+
+            // Iterate all subfolders in whitelist
+            foreach (StorageFolder folder in subFolders)
+            {
+                if (folder.Name.Equals(visitorName))
+                {
+                    var filesInFolder = await folder.GetFilesAsync();
+
+                    var photoStream = await filesInFolder[0].OpenAsync(FileAccessMode.Read);
+                    BitmapImage image = new BitmapImage();
+                    await image.SetSourceAsync(photoStream);
+                    UserImage.Source = image;
+                }
+
+            }
+
+            if (gpioAvailable)
             {
                 // Unlock door for specified ammount of time
                 gpioHelper.UnlockDoor();

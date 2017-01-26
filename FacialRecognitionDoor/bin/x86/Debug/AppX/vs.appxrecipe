@@ -28,13 +28,13 @@
     <AppXManifest Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-01-24T15:50:54.838</Modified>
+      <Modified>2017-01-26T12:43:04.911</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\bin\x86\Debug\FacialRecognitionDoor.exe">
       <PackagePath>entrypoint\FacialRecognitionDoor.exe</PackagePath>
-      <Modified>2017-01-24T15:50:38.577</Modified>
+      <Modified>2017-01-26T12:43:04.449</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Solving Team\.nuget\packages\Microsoft.ApplicationInsights\1.0.0\lib\portable-win81+wpa81\Microsoft.ApplicationInsights.dll">
       <PackagePath>Microsoft.ApplicationInsights.dll</PackagePath>
@@ -512,7 +512,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\bin\x86\Debug\FacialRecognitionDoor.xr.xml">
       <PackagePath>FacialRecognitionDoor.xr.xml</PackagePath>
-      <Modified>2017-01-23T13:06:41.553</Modified>
+      <Modified>2017-01-26T10:49:04.828</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -521,11 +521,11 @@
     <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-01-24T15:50:50.243</Modified>
+      <Modified>2017-01-26T10:49:06.093</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\bin\x86\Debug\Core\FacialRecognitionDoor.exe">
       <PackagePath>FacialRecognitionDoor.exe</PackagePath>
-      <Modified>2017-01-24T15:50:54.824</Modified>
+      <Modified>2017-01-26T12:43:04.903</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

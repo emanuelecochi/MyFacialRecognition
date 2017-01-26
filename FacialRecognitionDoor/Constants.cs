@@ -6,7 +6,7 @@
     public static class GeneralConstants
     {
         // This variable should be set to false for devices, unlike the Raspberry Pi, that have GPU support
-        public const bool DisableLiveCameraFeed = true;
+        public const bool DisableLiveCameraFeed = false;
 
         // Oxford Face API Primary should be entered here
         // You can obtain a subscription key for Face API by following the instructions here: https://www.microsoft.com/cognitive-services/en-us/sign-up
@@ -26,14 +26,14 @@
         public const string InitialGreetingMessage = "Benvenuto nel sistema di riconoscimento facciale di Solving Team!";
 
         //public const string VisitorNotRecognizedMessage = "Sorry! I don't recognize you, so I cannot open the door.";
-        public const string VisitorNotRecognizedMessage = "Mi dispiace, tu non puoi entrare.";
+        public const string VisitorNotRecognizedMessage = "Mi dispiace, ma non ti conosco.";
         //public const string NoCameraMessage = "Sorry! It seems like your camera has not been fully initialized.";
         public const string NoCameraMessage = "Mi dispiace, la tua webcam non è stata inizializzata.";
 
         public static string GeneralGreetigMessage(string visitorName)
         {
             //return "Welcome to the Facial Recognition Door " + visitorName + "! I will open the door for you.";
-            return "Benvenuto in Solving Team " + visitorName + "! Puoi entrare.";
+            return "Benvenuto in Solving Team " + visitorName + "!";
         }
     }
 

@@ -59,6 +59,14 @@
       <RootProperty Name="TextAlignment" />
       <RootProperty Name="FontStyle" />
     </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.Image">
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="Margin" />
+      <RootProperty Name="Source" />
+      <RootProperty Name="MaxWidth" />
+      <RootProperty Name="Visibility" />
+    </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.GridView">
       <RootProperty Name="IsItemClickEnabled" />
       <RootProperty Name="DataFetchSize" />
@@ -76,14 +84,6 @@
     </RootType>
     <RootType FullName="Windows.UI.Xaml.DataTemplate">
       <RootProperty Name="Template" />
-    </RootType>
-    <RootType FullName="Windows.UI.Xaml.Controls.Image">
-      <RootProperty Name="Margin" />
-      <RootProperty Name="Source" />
-      <RootProperty Name="MaxWidth" />
-      <RootProperty Name="HorizontalAlignment" />
-      <RootProperty Name="VerticalAlignment" />
-      <RootProperty Name="Visibility" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Data.Binding" />
     <RootType FullName="Windows.UI.Xaml.Controls.CaptureElement">
