@@ -19,27 +19,27 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <MediaElement x:Name="speechMediaElement" HorizontalAlignment="Left" VerticalAlignment="Top" Loaded="speechMediaElement_Loaded"/>
-        <Grid x:Name="DisabledFeedGrid" Grid.Column="1">
+        <MediaElement x:Name="speechMediaElement" HorizontalAlignment="Left" VerticalAlignment="Top" Loaded="speechMediaElement_Loaded" d:IsHidden="True"/>
+        <Grid x:Name="DisabledFeedGrid" Grid.Column="1" d:IsHidden="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Rectangle Margin="10" Stroke="White" StrokeThickness="4" Grid.RowSpan="2"/>
-            <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center" Source="Assets/CameraIcon.png" Margin="50"/>
-            <TextBlock x:Name="DisabledText" TextWrapping="Wrap" Text="The live camera feed has been disabled because of hardware constraints." HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" FontSize="33.333" TextAlignment="Center" Margin="10,0"/>
-        </Grid> 
-        <StackPanel x:Name="LiveFeedPanel" Margin="0, 10" Grid.Row="0" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Rectangle Margin="10" Stroke="White" StrokeThickness="4" Grid.RowSpan="2" d:IsHidden="True"/>
+            <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center" Source="Assets/CameraIcon.png" Margin="50" d:IsHidden="True"/>
+            <TextBlock x:Name="DisabledText" TextWrapping="Wrap" Text="The live camera feed has been disabled because of hardware constraints." HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" FontSize="33.333" TextAlignment="Center" Margin="10,0" d:IsHidden="True"/>
+        </Grid>
+        <StackPanel x:Name="LiveFeedPanel" Margin="0, 10" Grid.Row="0" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" d:IsHidden="True">
             <CaptureElement x:Name='WebcamFeed' Loaded="WebcamFeed_Loaded"/>
         </StackPanel>
-        <StackPanel x:Name="AnalysingVisitorGrid" Grid.Column="2" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
+        <StackPanel x:Name="AnalysingVisitorGrid" Grid.Column="2" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed" d:IsHidden="True">
             <ProgressRing IsActive="True" Width="113" Height="80" Foreground="White" VerticalAlignment="Center" Margin="0,0,0,10"/>
             <TextBlock VerticalAlignment="Center" FontSize="26.667" Grid.Row="1" Text="Analyzing visitor..." TextWrapping="WrapWholeWords" TextAlignment="Center"/>
             <TextBlock VerticalAlignment="Center" FontSize="21.333" Grid.Row="1" Text="This may take some time depending on your hardware." TextWrapping="WrapWholeWords" TextAlignment="Center" FontStyle="Italic"/>
 
         </StackPanel>
 
-        <Grid>
+        <Grid d:IsHidden="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="8*" />
@@ -55,8 +55,8 @@
             </GridView>
             <ProgressRing x:Name="OxfordLoadingRing" Grid.Column="0" IsActive="True" Width="113" Height="80" Grid.RowSpan="2" Foreground="White"/>
         </Grid>
-        <TextBlock x:Name="benvenuto" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Grid.ColumnSpan="3" FontSize="33.333" Margin="50,80,50,0" TextAlignment="Center"/>
-        <Image x:Name="UserImage" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="50"/>
+        <TextBlock x:Name="MexBenvenuto" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.ColumnSpan="3" FontSize="33.333" Margin="50,10,50,0" TextAlignment="Center" d:IsHidden="True"/>
+        <Image x:Name="UserImage" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Grid.ColumnSpan="3" Margin="50,100,50,0"/>
     </Grid>
     <Page.BottomAppBar>
         <CommandBar IsOpen="True" IsSticky="True" IsEnabled="True" Foreground="#FF7C3C3C">

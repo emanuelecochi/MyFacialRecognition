@@ -12,6 +12,8 @@ namespace FacialRecognitionDoor.Helpers
     {
         private MediaElement mediaElement;
         private SpeechSynthesizer synthesizer;
+        public static string voiceMatchLanguageCode = "it";
+        public static string voiceMatchLanguageName = "Elsa";
 
         /// <summary>
         /// Accepts a MediaElement that should be placed on whichever page user is on when text is read by SpeechHelper.
@@ -21,7 +23,28 @@ namespace FacialRecognitionDoor.Helpers
         {
             mediaElement = media;
             synthesizer = new SpeechSynthesizer();
+            InitializeSynthesizer();
         }
+
+        public async Task InitializeSynthesizer()
+        {
+            if (synthesizer == null)
+            {
+                synthesizer = new SpeechSynthesizer();
+            }
+
+            // select the language display
+            var voices = SpeechSynthesizer.AllVoices;
+            foreach (VoiceInformation voice in voices)
+            {
+                if (voice.Language.Contains(voiceMatchLanguageCode) && voice.DisplayName.Contains(voiceMatchLanguageName))
+                {
+                    synthesizer.Voice = voice;
+                    break;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Synthesizes passed through text as audio and plays speech through the MediaElement first sent through.

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Threading;
 using Windows.Devices.Gpio;
 using Windows.Storage;
 using Windows.UI.Core;
@@ -14,6 +15,8 @@ using FacialRecognitionDoor.Helpers;
 using FacialRecognitionDoor.Objects;
 using Microsoft.ProjectOxford.Face;
 using Windows.UI.Xaml.Documents;
+using Windows.Media.SpeechSynthesis;
+using System.ComponentModel;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -43,11 +46,17 @@ namespace FacialRecognitionDoor
         // GUI Related Variables:
         private double visitorIDPhotoGridMaxWidth = 0;
 
+        private DispatcherTimer timer;
+        private Stopwatch sw = new Stopwatch();
+        private Boolean isPersonNear = false;
+        private Double distancePersonFromWebCam = 60;
+
         /// <summary>
         /// Called when the page is first navigated to.
         /// </summary>
         public MainPage()
         {
+
             InitializeComponent();
 
             // Causes this page to save its state when navigating to other pages
@@ -63,6 +72,7 @@ namespace FacialRecognitionDoor
             {
                 // If GPIO is not available, attempt to initialize it
                 InitializeGpio();
+
             }
 
             // If user has set the DisableLiveCameraFeed within Constants.cs to true, disable the feed:
@@ -76,6 +86,18 @@ namespace FacialRecognitionDoor
                 LiveFeedPanel.Visibility = Visibility.Visible;
                 DisabledFeedGrid.Visibility = Visibility.Collapsed;
             }
+            //timer = new DispatcherTimer();
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += Timer_Tick;
+            worker.RunWorkerAsync(1000);
+            /*
+            timer.Interval = TimeSpan.FromMilliseconds(1000);
+            timer.Tick += Timer_Tick;
+            if (gpioHelper.GetPinEcho() != null && gpioHelper.GetPinTrigger() != null)
+            {
+                timer.Start();
+            }*/
         }
 
         /// <summary>
@@ -99,6 +121,7 @@ namespace FacialRecognitionDoor
 
             // Populates UI grid with whitelisted visitors
             UpdateWhitelistedVisitors();
+            //foto("Emanuele");
         }
 
         /// <summary>
@@ -186,6 +209,7 @@ namespace FacialRecognitionDoor
             visitorIDPhotoGridMaxWidth = (WhitelistedUsersGrid.ActualWidth / 3) - 10;
         }
 
+
         /// <summary>
         /// Triggered when user presses physical door bell button
         /// </summary>
@@ -198,7 +222,7 @@ namespace FacialRecognitionDoor
                 {
                     //Doorbell was just pressed
                     doorbellJustPressed = true;
-
+                    await Task.Delay(2000);
                     await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
                     {
                         await DoorbellPressed();
@@ -213,7 +237,7 @@ namespace FacialRecognitionDoor
         /// </summary>
         private async void DoorbellButton_Click(object sender, RoutedEventArgs e)
         {
-            this.benvenuto.Inlines.Clear();
+            this.MexBenvenuto.Inlines.Clear();
             if (!doorbellJustPressed)
             {
                 doorbellJustPressed = true;
@@ -224,7 +248,7 @@ namespace FacialRecognitionDoor
         /// <summary>
         /// Called when user hits physical or vitual doorbell buttons. Captures photo of current webcam view and sends it to Oxford for facial recognition processing.
         /// </summary>
-        private async Task DoorbellPressed()
+        public async Task DoorbellPressed()
         {
             // Display analysing visitors grid to inform user that doorbell press was registered
             AnalysingVisitorGrid.Visibility = Visibility.Visible;
@@ -273,10 +297,11 @@ namespace FacialRecognitionDoor
                 {
                     // Otherwise, inform user that they were not recognized by the system
                     await speech.Read(SpeechContants.VisitorNotRecognizedMessage);
-                    this.benvenuto.Inlines.Clear();
-                    //Run textRun = new Run();
-                    //textRun.Text = "Sconosciuto";
-                    this.benvenuto.Text = "Sei uno sconosciuto";
+                    this.MexBenvenuto.Inlines.Clear();
+                    this.MexBenvenuto.Text = "Sei uno sconosciuto";
+                    this.MexBenvenuto.Visibility = Visibility.Visible;
+                    await Task.Delay(3000);
+                    this.MexBenvenuto.Visibility = Visibility.Collapsed;
                 }
             }
             else
@@ -298,25 +323,21 @@ namespace FacialRecognitionDoor
             doorbellJustPressed = false;
             AnalysingVisitorGrid.Visibility = Visibility.Collapsed;
         }
-
-        /// <summary>
-        /// Unlocks door and greets visitor
-        /// </summary>
-        private async void UnlockDoor(string visitorName)
+        
+        private async void getPhoto(String name)
         {
-            // Greet visitor
-            await speech.Read(SpeechContants.GeneralGreetigMessage(visitorName));
-            this.benvenuto.Inlines.Clear();
-            //Run textRun = new Run();
-            //textRun.Text = visitorName;
-            this.benvenuto.Text = "Welcome " + visitorName;
+            // If the whitelistFolder has not been opened, open it
+            if (whitelistFolder == null)
+            {
+                whitelistFolder = await KnownFolders.PicturesLibrary.CreateFolderAsync(GeneralConstants.WhiteListFolderName, CreationCollisionOption.OpenIfExists);
+            }
 
             var subFolders = await whitelistFolder.GetFoldersAsync();
 
             // Iterate all subfolders in whitelist
             foreach (StorageFolder folder in subFolders)
             {
-                if (folder.Name.Equals(visitorName))
+                if (folder.Name.Equals(name))
                 {
                     var filesInFolder = await folder.GetFilesAsync();
 
@@ -327,6 +348,49 @@ namespace FacialRecognitionDoor
                 }
 
             }
+        }
+
+        /// <summary>
+        /// Unlocks door and greets visitor
+        /// </summary>
+        private async void UnlockDoor(string visitorName)
+        {
+            // Greet visitor
+            await speech.Read(SpeechContants.GeneralGreetigMessage(visitorName));
+            this.MexBenvenuto.Inlines.Clear();
+            this.MexBenvenuto.Text = "Welcome " + visitorName;
+
+            // If the whitelistFolder has not been opened, open it
+            if (whitelistFolder == null)
+            {
+                whitelistFolder = await KnownFolders.PicturesLibrary.CreateFolderAsync(GeneralConstants.WhiteListFolderName, CreationCollisionOption.OpenIfExists);
+            }
+
+            var subFolders = await whitelistFolder.GetFoldersAsync();
+
+            // Iterate all subfolders in whitelist
+            foreach (StorageFolder folder in subFolders)
+            {
+                //Search visitorName's photo
+                if (folder.Name.Equals(visitorName))
+                {
+                    var filesInFolder = await folder.GetFilesAsync();
+
+                    var photoStream = await filesInFolder[0].OpenAsync(FileAccessMode.Read);
+                    BitmapImage image = new BitmapImage();
+                    await image.SetSourceAsync(photoStream);
+                    UserImage.Source = image;
+                    // Active the image and text
+                    UserImage.Visibility = Visibility.Visible;
+                    MexBenvenuto.Visibility = Visibility.Visible;
+                    break;
+                }
+
+            }
+            // Wait 3s and deactive the image and text
+            await Task.Delay(3000);
+            UserImage.Visibility = Visibility.Collapsed;
+            MexBenvenuto.Visibility = Visibility.Collapsed;
 
             if (gpioAvailable)
             {
@@ -339,7 +403,7 @@ namespace FacialRecognitionDoor
         /// Called when user hits vitual add user button. Navigates to NewUserPage page.
         /// </summary>
         private async void NewUserButton_Click(object sender, RoutedEventArgs e)
-        { 
+        {
             // Stops camera preview on this page, so that it can be started on NewUserPage
             await webcam.StopCameraPreview();
 
@@ -427,5 +491,42 @@ namespace FacialRecognitionDoor
             // Exit app
             Application.Current.Exit();
         }
+
+        private async void Timer_Tick(object sender, object e)
+        {
+            var frame = Window.Current.Content as Frame;
+            if (frame.SourcePageType.Name.Equals("MainPage"))
+            {
+                gpioHelper.GetPinTrigger().Write(GpioPinValue.High);
+                await Task.Delay(10);
+                gpioHelper.GetPinTrigger().Write(GpioPinValue.Low);
+                while (gpioHelper.GetPinEcho().Read() == GpioPinValue.Low)
+                {
+                    sw.Restart();
+                }
+
+                while (gpioHelper.GetPinEcho().Read() == GpioPinValue.High) {}
+                sw.Stop();
+
+                var elapsed = sw.Elapsed.TotalSeconds;
+                var distance = elapsed * 34000;
+
+                distance /= 2;
+
+                if (distance < distancePersonFromWebCam && elapsed < 0.038) {
+                    if (!isPersonNear) {
+                        isPersonNear = true;
+                        //await Task.Delay(1000);
+                        await DoorbellPressed();
+                    }
+                }else {
+                    isPersonNear = false;
+                }
+
+                Debug.WriteLine("Distance: " + distance + " cm");
+                
+            }
+        }
+
     }
 }

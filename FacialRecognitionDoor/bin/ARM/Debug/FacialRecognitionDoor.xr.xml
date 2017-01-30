@@ -63,9 +63,9 @@
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="Margin" />
-      <RootProperty Name="Visibility" />
       <RootProperty Name="Source" />
       <RootProperty Name="MaxWidth" />
+      <RootProperty Name="Visibility" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.GridView">
       <RootProperty Name="IsItemClickEnabled" />

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.Devices.Gpio;
+using System.Diagnostics;
+using Windows.UI.Xaml;
 
 namespace FacialRecognitionDoor.Helpers
 {
@@ -10,8 +12,11 @@ namespace FacialRecognitionDoor.Helpers
     public class GpioHelper
     {
         private GpioController gpioController;
-        private GpioPin doorbellPin;
+        private GpioPin sensorPIRPin;
         private GpioPin doorLockPin;
+        private GpioPin pinEcho;
+        private GpioPin pinTrigger;
+        
 
         /// <summary>
         /// Attempts to initialize Gpio for application. This includes doorbell interaction and locking/unlccking of door.
@@ -28,27 +33,29 @@ namespace FacialRecognitionDoor.Helpers
             }
 
             // Opens the GPIO pin that interacts with the doorbel button
-            doorbellPin = gpioController.OpenPin(GpioConstants.ButtonPinID);
+            sensorPIRPin = gpioController.OpenPin(GpioConstants.pinPIR);
 
-            if (doorbellPin == null)
+            if (sensorPIRPin == null)
             {
                 // Pin wasn't opened properly, return false
                 return false;
             }
 
             // Set a debounce timeout to filter out switch bounce noise from a button press
-            doorbellPin.DebounceTimeout = TimeSpan.FromMilliseconds(25);
-
-            if (doorbellPin.IsDriveModeSupported(GpioPinDriveMode.InputPullUp))
+            sensorPIRPin.DebounceTimeout = TimeSpan.FromMilliseconds(25);
+            sensorPIRPin.SetDriveMode(GpioPinDriveMode.Input);
+            /*
+            if (sensorPIRPin.IsDriveModeSupported(GpioPinDriveMode.InputPullUp))
             {
                 // Take advantage of built in pull-up resistors of Raspberry Pi 2 and DragonBoard 410c
-                doorbellPin.SetDriveMode(GpioPinDriveMode.InputPullUp);
+                sensorPIRPin.SetDriveMode(GpioPinDriveMode.InputPullUp);
             }
             else
             {
                 // MBM does not support PullUp as it does not have built in pull-up resistors 
-                doorbellPin.SetDriveMode(GpioPinDriveMode.Input);
+                sensorPIRPin.SetDriveMode(GpioPinDriveMode.Input);
             }
+            */
 
             // Opens the GPIO pin that interacts with the door lock system
             doorLockPin = gpioController.OpenPin(GpioConstants.DoorLockPinID);
@@ -62,6 +69,19 @@ namespace FacialRecognitionDoor.Helpers
             // Initializes pin to high voltage. This locks the door. 
             doorLockPin.Write(GpioPinValue.High);
 
+            // Opens the GPIO pin that interacts with the sensor ultrasonic
+            pinEcho = gpioController.OpenPin(GpioConstants.ECHO_PIN);
+            pinTrigger = gpioController.OpenPin(GpioConstants.TRIGGER_PIN);
+
+            pinTrigger.SetDriveMode(GpioPinDriveMode.Output);
+            pinEcho.SetDriveMode(GpioPinDriveMode.Input);
+
+            Debug.WriteLine("GPIO controller and pins initialized successfully.");
+
+            pinTrigger.Write(GpioPinValue.Low);
+
+            Task.Delay(100);
+
             //Initialization was successfull, return true
             return true;
         }
@@ -71,7 +91,17 @@ namespace FacialRecognitionDoor.Helpers
         /// </summary>
         public GpioPin GetDoorBellPin()
         {
-            return doorbellPin;
+            return sensorPIRPin;
+        }
+
+        public GpioPin GetPinEcho()
+        {
+            return pinEcho;
+        }
+
+        public GpioPin GetPinTrigger()
+        {
+            return pinTrigger;
         }
 
         /// <summary>

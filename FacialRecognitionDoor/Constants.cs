@@ -43,7 +43,11 @@
     public static class GpioConstants
     {
         // The GPIO pin that the doorbell button is attached to
-        public const int ButtonPinID = 5;
+        public const int pinPIR = 5;
+
+        // The GPIO pin that the sensor ultrasonic is attached to
+        public const int ECHO_PIN = 23;
+        public const int TRIGGER_PIN = 18;
 
         // The GPIO pin that the door lock is attached to
         public const int DoorLockPinID = 4;
