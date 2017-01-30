@@ -86,18 +86,13 @@ namespace FacialRecognitionDoor
                 LiveFeedPanel.Visibility = Visibility.Visible;
                 DisabledFeedGrid.Visibility = Visibility.Collapsed;
             }
-            //timer = new DispatcherTimer();
-            BackgroundWorker worker = new BackgroundWorker();
-            worker.WorkerReportsProgress = true;
-            worker.DoWork += Timer_Tick;
-            worker.RunWorkerAsync(1000);
-            /*
+            timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(1000);
             timer.Tick += Timer_Tick;
             if (gpioHelper.GetPinEcho() != null && gpioHelper.GetPinTrigger() != null)
             {
                 timer.Start();
-            }*/
+            }
         }
 
         /// <summary>
