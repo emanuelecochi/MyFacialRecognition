@@ -68,7 +68,7 @@ namespace FacialRecognitionDoor
                 InitializeOxford();
             }
 
-            if(gpioAvailable == false)
+            if (gpioAvailable == false)
             {
                 // If GPIO is not available, attempt to initialize it
                 InitializeGpio();
@@ -76,7 +76,7 @@ namespace FacialRecognitionDoor
             }
 
             // If user has set the DisableLiveCameraFeed within Constants.cs to true, disable the feed:
-            if(GeneralConstants.DisableLiveCameraFeed)
+            if (GeneralConstants.DisableLiveCameraFeed)
             {
                 LiveFeedPanel.Visibility = Visibility.Collapsed;
                 DisabledFeedGrid.Visibility = Visibility.Visible;
@@ -86,13 +86,19 @@ namespace FacialRecognitionDoor
                 LiveFeedPanel.Visibility = Visibility.Visible;
                 DisabledFeedGrid.Visibility = Visibility.Collapsed;
             }
+
+            
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(1000);
+            timer.Interval = TimeSpan.FromMilliseconds(2000);
             timer.Tick += Timer_Tick;
             if (gpioHelper.GetPinEcho() != null && gpioHelper.GetPinTrigger() != null)
             {
                 timer.Start();
             }
+            //Task Task1 = new Task(UpdateDistance);
+            //Task1.Start();
+
+
         }
 
         /// <summary>
@@ -100,7 +106,7 @@ namespace FacialRecognitionDoor
         /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if(initializedOxford)
+            if (initializedOxford)
             {
                 UpdateWhitelistedVisitors();
             }
@@ -166,7 +172,7 @@ namespace FacialRecognitionDoor
                     await webcam.StartCameraPreview();
                 }
             }
-            else if(webcam.IsInitialized())
+            else if (webcam.IsInitialized())
             {
                 WebcamFeed.Source = webcam.mediaCapture;
 
@@ -261,7 +267,7 @@ namespace FacialRecognitionDoor
                 try
                 {
                     // Oxford determines whether or not the visitor is on the Whitelist and returns true if so
-                    recognizedVisitors = await OxfordFaceAPIHelper.IsFaceInWhitelist(image);                    
+                    recognizedVisitors = await OxfordFaceAPIHelper.IsFaceInWhitelist(image);
                 }
                 catch (FaceRecognitionException fe)
                 {
@@ -282,8 +288,8 @@ namespace FacialRecognitionDoor
                     // General error. This can happen if there are no visitors authorized in the whitelist
                     Debug.WriteLine("WARNING: Oxford just threw a general expception.");
                 }
-                
-                if(recognizedVisitors.Count > 0)
+
+                if (recognizedVisitors.Count > 0)
                 {
                     // If everything went well and a visitor was recognized, unlock the door:
                     UnlockDoor(recognizedVisitors[0]);
@@ -308,7 +314,7 @@ namespace FacialRecognitionDoor
                     await speech.Read(SpeechContants.NoCameraMessage);
                 }
 
-                if(!initializedOxford)
+                if (!initializedOxford)
                 {
                     // Oxford is still initializing:
                     Debug.WriteLine("Unable to analyze visitor at door as Oxford Facial Recogntion is still initializing.");
@@ -318,7 +324,7 @@ namespace FacialRecognitionDoor
             doorbellJustPressed = false;
             AnalysingVisitorGrid.Visibility = Visibility.Collapsed;
         }
-        
+
         private async void getPhoto(String name)
         {
             // If the whitelistFolder has not been opened, open it
@@ -487,8 +493,10 @@ namespace FacialRecognitionDoor
             Application.Current.Exit();
         }
 
+        
         private async void Timer_Tick(object sender, object e)
         {
+
             var frame = Window.Current.Content as Frame;
             if (frame.SourcePageType.Name.Equals("MainPage"))
             {
@@ -500,7 +508,7 @@ namespace FacialRecognitionDoor
                     sw.Restart();
                 }
 
-                while (gpioHelper.GetPinEcho().Read() == GpioPinValue.High) {}
+                while (gpioHelper.GetPinEcho().Read() == GpioPinValue.High) { }
                 sw.Stop();
 
                 var elapsed = sw.Elapsed.TotalSeconds;
@@ -508,20 +516,61 @@ namespace FacialRecognitionDoor
 
                 distance /= 2;
 
-                if (distance < distancePersonFromWebCam && elapsed < 0.038) {
-                    if (!isPersonNear) {
+                if (distance < distancePersonFromWebCam && elapsed < 0.038)
+                {
+                    if (!isPersonNear)
+                    {
                         isPersonNear = true;
-                        //await Task.Delay(1000);
+                        timer.Stop();
                         await DoorbellPressed();
+                        timer.Start();
                     }
-                }else {
+                }
+                else
+                {
                     isPersonNear = false;
                 }
-
                 Debug.WriteLine("Distance: " + distance + " cm");
-                
             }
         }
+        
+
+        private async void UpdateDistance()
+        {
+            while (true)
+            {
+                gpioHelper.GetPinTrigger().Write(GpioPinValue.High);
+                await Task.Delay(10);
+                gpioHelper.GetPinTrigger().Write(GpioPinValue.Low);
+                while (gpioHelper.GetPinEcho().Read() == GpioPinValue.Low)
+                {
+                    sw.Restart();
+                }
+
+                while (gpioHelper.GetPinEcho().Read() == GpioPinValue.High) { }
+                sw.Stop();
+
+                var elapsed = sw.Elapsed.TotalSeconds;
+                var distance = elapsed * 17000;
+
+                if (distance < distancePersonFromWebCam && elapsed < 0.038)
+                {
+                    if (!isPersonNear)
+                    {
+                        isPersonNear = true;
+                        await DoorbellPressed();
+                    }
+                }
+                else
+                {
+                    isPersonNear = false;
+                }
+                Debug.WriteLine("Distance: " + distance + " cm");
+                await Task.Delay(400);
+            }
+        }
+            
 
     }
+    
 }

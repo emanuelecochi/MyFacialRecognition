@@ -33,6 +33,7 @@ namespace FacialRecognitionDoor.Helpers
                 synthesizer = new SpeechSynthesizer();
             }
 
+            /*
             // select the language display
             var voices = SpeechSynthesizer.AllVoices;
             foreach (VoiceInformation voice in voices)
@@ -43,6 +44,7 @@ namespace FacialRecognitionDoor.Helpers
                     break;
                 }
             }
+            */
         }
 
 
