@@ -91,10 +91,6 @@ namespace FacialRecognitionDoor
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(2000);
             timer.Tick += UpdateDistance_Tick;
-            if (gpioHelper.GetPinEcho() != null && gpioHelper.GetPinTrigger() != null)
-            {
-                timer.Start();
-            }
             
 
 
@@ -422,6 +418,10 @@ namespace FacialRecognitionDoor
                 await UpdateWhitelistedVisitorsList();
                 UpdateWhitelistedVisitorsGrid();
                 currentlyUpdatingWhitelist = false;
+                if (gpioHelper.GetPinEcho() != null && gpioHelper.GetPinTrigger() != null)
+                {
+                    timer.Start();
+                }
             }
         }
 
@@ -471,6 +471,7 @@ namespace FacialRecognitionDoor
 
             // Hide Oxford loading ring
             OxfordLoadingRing.Visibility = Visibility.Collapsed;
+
         }
 
         /// <summary>
@@ -513,7 +514,7 @@ namespace FacialRecognitionDoor
 
                 distance /= 2;
 
-                if (distance < distancePersonFromWebCam && elapsed < 0.038)
+                if (!currentlyUpdatingWhitelist && distance < distancePersonFromWebCam && elapsed < 0.038)
                 {
                     if (!isPersonNear)
                     {
