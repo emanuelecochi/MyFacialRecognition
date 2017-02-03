@@ -90,13 +90,12 @@ namespace FacialRecognitionDoor
             
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(2000);
-            timer.Tick += Timer_Tick;
+            timer.Tick += UpdateDistance_Tick;
             if (gpioHelper.GetPinEcho() != null && gpioHelper.GetPinTrigger() != null)
             {
                 timer.Start();
             }
-            //Task Task1 = new Task(UpdateDistance);
-            //Task1.Start();
+            
 
 
         }
@@ -122,7 +121,6 @@ namespace FacialRecognitionDoor
 
             // Populates UI grid with whitelisted visitors
             UpdateWhitelistedVisitors();
-            //foto("Emanuele");
         }
 
         /// <summary>
@@ -494,9 +492,8 @@ namespace FacialRecognitionDoor
         }
 
         
-        private async void Timer_Tick(object sender, object e)
+        private async void UpdateDistance_Tick(object sender, object e)
         {
-
             var frame = Window.Current.Content as Frame;
             if (frame.SourcePageType.Name.Equals("MainPage"))
             {
@@ -522,6 +519,7 @@ namespace FacialRecognitionDoor
                     {
                         isPersonNear = true;
                         timer.Stop();
+                        Debug.WriteLine("Persona vicina");
                         await DoorbellPressed();
                         timer.Start();
                     }
@@ -532,44 +530,48 @@ namespace FacialRecognitionDoor
                 }
                 Debug.WriteLine("Distance: " + distance + " cm");
             }
-        }
-        
-
-        private async void UpdateDistance()
-        {
-            while (true)
-            {
-                gpioHelper.GetPinTrigger().Write(GpioPinValue.High);
-                await Task.Delay(10);
-                gpioHelper.GetPinTrigger().Write(GpioPinValue.Low);
-                while (gpioHelper.GetPinEcho().Read() == GpioPinValue.Low)
-                {
-                    sw.Restart();
-                }
-
-                while (gpioHelper.GetPinEcho().Read() == GpioPinValue.High) { }
-                sw.Stop();
-
-                var elapsed = sw.Elapsed.TotalSeconds;
-                var distance = elapsed * 17000;
-
-                if (distance < distancePersonFromWebCam && elapsed < 0.038)
-                {
-                    if (!isPersonNear)
-                    {
-                        isPersonNear = true;
-                        await DoorbellPressed();
-                    }
-                }
-                else
-                {
-                    isPersonNear = false;
-                }
-                Debug.WriteLine("Distance: " + distance + " cm");
-                await Task.Delay(400);
-            }
-        }
             
+        }
+
+        public double GetDistance()
+        {
+            var mre = new ManualResetEventSlim(false);
+
+
+            //Send a 10µs pulse to start the measurement
+            //Envoie une impulsion de 10µs pour commencer le calcul 
+            gpioHelper.GetPinTrigger().Write(GpioPinValue.High);
+            mre.Wait(TimeSpan.FromMilliseconds(0.01));
+            gpioHelper.GetPinTrigger().Write(GpioPinValue.Low);
+
+            var time = PulseIn(gpioHelper.GetPinEcho(), GpioPinValue.High);
+
+            // multiply by speed of sound in milliseconds (34000) divided by 2 (cause pulse make rountrip)
+            // multiplie par la vitesse du son en millisecondes (34000) divisé par 2 (parce que l'impulsion fait un aller-retour)
+            var distance = time * 17000;
+            return distance;
+        }
+
+        private double PulseIn(GpioPin pin, GpioPinValue value)
+        {
+            var sw = new Stopwatch();
+            // Wait for pulse
+            // Attend la pulsation
+            while (pin.Read() != value)
+            {
+            }
+            sw.Start();
+
+            // Wait for pulse end
+            // Attend la fin de la pulsation
+            while (pin.Read() == value)
+            {
+            }
+            sw.Stop();
+
+            return sw.Elapsed.TotalSeconds;
+        }
+
 
     }
     
