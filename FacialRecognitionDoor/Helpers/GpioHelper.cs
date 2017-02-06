@@ -16,7 +16,21 @@ namespace FacialRecognitionDoor.Helpers
         private GpioPin doorLockPin;
         private GpioPin pinEcho;
         private GpioPin pinTrigger;
-        
+        private HCSR04 hcsr04 = new HCSR04();
+
+        internal HCSR04 Hcsr04
+        {
+            get
+            {
+                return hcsr04;
+            }
+
+            set
+            {
+                hcsr04 = value;
+            }
+        }
+
 
         /// <summary>
         /// Attempts to initialize Gpio for application. This includes doorbell interaction and locking/unlccking of door.
@@ -69,6 +83,7 @@ namespace FacialRecognitionDoor.Helpers
             // Initializes pin to high voltage. This locks the door. 
             doorLockPin.Write(GpioPinValue.High);
 
+            /*
             // Opens the GPIO pin that interacts with the sensor ultrasonic
             pinEcho = gpioController.OpenPin(GpioConstants.ECHO_PIN);
             pinTrigger = gpioController.OpenPin(GpioConstants.TRIGGER_PIN);
@@ -81,6 +96,8 @@ namespace FacialRecognitionDoor.Helpers
             pinTrigger.Write(GpioPinValue.Low);
 
             Task.Delay(100);
+            */
+            hcsr04 = new HCSR04(GpioConstants.TRIGGER_PIN, GpioConstants.ECHO_PIN);
 
             //Initialization was successfull, return true
             return true;

@@ -49,7 +49,8 @@ namespace FacialRecognitionDoor
         private DispatcherTimer timer;
         private Stopwatch sw = new Stopwatch();
         private Boolean isPersonNear = false;
-        private Double distancePersonFromWebCam = 60;
+        private Double distancePersonFromWebCam = 150;
+        private double distance;
 
         /// <summary>
         /// Called when the page is first navigated to.
@@ -89,9 +90,17 @@ namespace FacialRecognitionDoor
 
             
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(2000);
-            timer.Tick += UpdateDistance_Tick;
-            
+            timer.Interval = TimeSpan.FromMilliseconds(1000);
+            timer.Tick += CheckPerson_Tick;
+
+            /*if (gpioHelper.GetPinEcho() != null && gpioHelper.GetPinTrigger() != null)
+            {
+                timer.Start();
+            }*/
+            if (gpioHelper.Hcsr04.EchoPin != null && gpioHelper.Hcsr04.TriggerPin != null)
+            {
+                timer.Start();
+            }
 
 
         }
@@ -418,10 +427,6 @@ namespace FacialRecognitionDoor
                 await UpdateWhitelistedVisitorsList();
                 UpdateWhitelistedVisitorsGrid();
                 currentlyUpdatingWhitelist = false;
-                if (gpioHelper.GetPinEcho() != null && gpioHelper.GetPinTrigger() != null)
-                {
-                    timer.Start();
-                }
             }
         }
 
@@ -501,10 +506,8 @@ namespace FacialRecognitionDoor
                 gpioHelper.GetPinTrigger().Write(GpioPinValue.High);
                 await Task.Delay(10);
                 gpioHelper.GetPinTrigger().Write(GpioPinValue.Low);
-                while (gpioHelper.GetPinEcho().Read() == GpioPinValue.Low)
-                {
-                    sw.Restart();
-                }
+                while (gpioHelper.GetPinEcho().Read() == GpioPinValue.Low){ }
+                sw.Restart();
 
                 while (gpioHelper.GetPinEcho().Read() == GpioPinValue.High) { }
                 sw.Stop();
@@ -534,46 +537,33 @@ namespace FacialRecognitionDoor
             
         }
 
-        public double GetDistance()
+        private async void CheckPerson_Tick(object sender, object e)
         {
-            var mre = new ManualResetEventSlim(false);
-
-
-            //Send a 10µs pulse to start the measurement
-            //Envoie une impulsion de 10µs pour commencer le calcul 
-            gpioHelper.GetPinTrigger().Write(GpioPinValue.High);
-            mre.Wait(TimeSpan.FromMilliseconds(0.01));
-            gpioHelper.GetPinTrigger().Write(GpioPinValue.Low);
-
-            var time = PulseIn(gpioHelper.GetPinEcho(), GpioPinValue.High);
-
-            // multiply by speed of sound in milliseconds (34000) divided by 2 (cause pulse make rountrip)
-            // multiplie par la vitesse du son en millisecondes (34000) divisé par 2 (parce que l'impulsion fait un aller-retour)
-            var distance = time * 17000;
-            return distance;
-        }
-
-        private double PulseIn(GpioPin pin, GpioPinValue value)
-        {
-            var sw = new Stopwatch();
-            // Wait for pulse
-            // Attend la pulsation
-            while (pin.Read() != value)
+            var frame = Window.Current.Content as Frame;
+            if (frame.SourcePageType.Name.Equals("MainPage"))
             {
+                distance = gpioHelper.Hcsr04.GetDistance();
+                if(distance != -1)
+                {
+                    if(!currentlyUpdatingWhitelist && distance < distancePersonFromWebCam)
+                    {
+                        if (!isPersonNear)
+                        {
+                            isPersonNear = true;
+                            timer.Stop();
+                            Debug.WriteLine("Persona vicina");
+                            await DoorbellPressed();
+                            timer.Start();
+                        }
+                    }
+                    else
+                    {
+                        isPersonNear = false;
+                    }
+                    Debug.WriteLine("Distance: " + distance + " cm");
+                }
             }
-            sw.Start();
-
-            // Wait for pulse end
-            // Attend la fin de la pulsation
-            while (pin.Read() == value)
-            {
-            }
-            sw.Stop();
-
-            return sw.Elapsed.TotalSeconds;
         }
-
-
     }
     
 }
