@@ -49,8 +49,8 @@ namespace FacialRecognitionDoor
         private DispatcherTimer timer;
         private Stopwatch sw = new Stopwatch();
         private Boolean isPersonNear = false;
-        private Double distancePersonFromWebCam = 150;
         private double distance;
+        private bool isWhiteListCreate = false;
 
         /// <summary>
         /// Called when the page is first navigated to.
@@ -90,7 +90,7 @@ namespace FacialRecognitionDoor
 
             
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(1000);
+            timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += CheckPerson_Tick;
 
             /*if (gpioHelper.GetPinEcho() != null && gpioHelper.GetPinTrigger() != null)
@@ -123,7 +123,7 @@ namespace FacialRecognitionDoor
         {
             // initializedOxford bool will be set to true when Oxford has finished initialization successfully
             initializedOxford = await OxfordFaceAPIHelper.InitializeOxford();
-
+            isWhiteListCreate = true;
             // Populates UI grid with whitelisted visitors
             UpdateWhitelistedVisitors();
         }
@@ -302,7 +302,7 @@ namespace FacialRecognitionDoor
                     // Otherwise, inform user that they were not recognized by the system
                     await speech.Read(SpeechContants.VisitorNotRecognizedMessage);
                     this.MexBenvenuto.Inlines.Clear();
-                    this.MexBenvenuto.Text = "Sei uno sconosciuto";
+                    this.MexBenvenuto.Text = "Non ti conosco";
                     this.MexBenvenuto.Visibility = Visibility.Visible;
                     await Task.Delay(3000);
                     this.MexBenvenuto.Visibility = Visibility.Collapsed;
@@ -517,7 +517,7 @@ namespace FacialRecognitionDoor
 
                 distance /= 2;
 
-                if (!currentlyUpdatingWhitelist && distance < distancePersonFromWebCam && elapsed < 0.038)
+                if (!currentlyUpdatingWhitelist && distance < GeneralConstants.distancePersonFromWebCam && elapsed < 0.038)
                 {
                     if (!isPersonNear)
                     {
@@ -545,7 +545,7 @@ namespace FacialRecognitionDoor
                 distance = gpioHelper.Hcsr04.GetDistance();
                 if(distance != -1)
                 {
-                    if(!currentlyUpdatingWhitelist && distance < distancePersonFromWebCam)
+                    if(isWhiteListCreate && distance < GeneralConstants.distancePersonFromWebCam)
                     {
                         if (!isPersonNear)
                         {

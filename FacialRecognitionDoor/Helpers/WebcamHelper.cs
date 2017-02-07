@@ -121,7 +121,7 @@ namespace FacialRecognitionDoor.Helpers
         /// <summary>
         /// Generates unique file name based on current time and date. Returns value as string.
         /// </summary>
-        private string GenerateNewFileName()
+        public string GenerateNewFileName()
         {
             return DateTime.UtcNow.ToString("yyyy.MMM.dd HH-mm-ss") + " Facial Recognition Door";
         }

@@ -261,8 +261,15 @@ namespace FacialRecognitionDoor.FacialRecognition
         /// <returns></returns>
         private async Task RemoveFace(Guid personId, Guid faceId)
         {
-            await _faceApiClient.DeletePersonFaceAsync(WhitelistId, personId, faceId);
-            _whitelist.RemoveFace(personId, faceId);
+            try
+            {
+                await _faceApiClient.DeletePersonFaceAsync(WhitelistId, personId, faceId);
+                _whitelist.RemoveFace(personId, faceId);
+
+            }catch(FaceAPIException fe)
+            {
+                Debug.WriteLine("FaceAPIException: " + fe.ErrorMessage);
+            } 
         }
 
         /// <summary>

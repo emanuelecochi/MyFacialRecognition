@@ -6,6 +6,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using FacialRecognitionDoor.Helpers;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -121,6 +122,45 @@ namespace FacialRecognitionDoor
             }
         }
 
+        private async void LoadPhoto_Click(object sender, RoutedEventArgs e)
+        {
+
+            FileOpenPicker openPicker = new FileOpenPicker();
+            openPicker.ViewMode = PickerViewMode.Thumbnail;
+            openPicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            openPicker.FileTypeFilter.Add(".jpg");
+            openPicker.FileTypeFilter.Add(".png");
+
+            StorageFile file = await openPicker.PickSingleFileAsync();
+            var idPhotoImage = new BitmapImage();
+
+            if (file != null)
+            {
+                var stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
+                idPhotoImage.SetSource(stream);
+                string fileName = new WebcamHelper().GenerateNewFileName() + ".jpg";
+                CreationCollisionOption collisionOption = CreationCollisionOption.GenerateUniqueName;
+                StorageFile fileTemp = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(fileName, collisionOption);
+                file.CopyAndReplaceAsync(fileTemp);
+                currentIdPhotoFile = fileTemp;
+            }
+
+            // Hide the capture photo and load image button
+            CaptureButton.Visibility = Visibility.Collapsed;
+            LoadButton.Visibility = Visibility.Collapsed;
+
+            // Set the soruce of the photo control the new BitmapImage and make the photo control visible
+            IdPhotoControl.Source = idPhotoImage;
+            IdPhotoControl.Visibility = Visibility.Visible;
+
+            // Collapse the webcam feed or disabled feed grid. Make the enter user name grid visible.
+            WebcamFeed.Visibility = Visibility.Collapsed;
+            DisabledFeedGrid.Visibility = Visibility.Collapsed;
+
+            UserNameGrid.Visibility = Visibility.Visible;
+        }
+        
+
         /// <summary>
         /// Triggered when the Cancel Photo button is clicked by the user. Resets page.
         /// </summary>
@@ -128,6 +168,7 @@ namespace FacialRecognitionDoor
         {
             // Collapse the confirm photo buttons and open the capture photo button.
             CaptureButton.Visibility = Visibility.Visible;
+            //LoadButton.Visibility = Visibility.Visible;
             UserNameGrid.Visibility = Visibility.Collapsed;
             UserNameBox.Text = "";
 
