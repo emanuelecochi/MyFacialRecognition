@@ -271,6 +271,7 @@ namespace FacialRecognitionDoor
                 {
                     // Oxford determines whether or not the visitor is on the Whitelist and returns true if so
                     recognizedVisitors = await OxfordFaceAPIHelper.IsFaceInWhitelist(image);
+                    this.MexBenvenuto.Inlines.Clear();
                 }
                 catch (FaceRecognitionException fe)
                 {
@@ -278,12 +279,14 @@ namespace FacialRecognitionDoor
                     {
                         // Fails and catches as a FaceRecognitionException if no face is detected in the image
                         case FaceRecognitionExceptionType.NoFaceDetected:
+                            this.MexBenvenuto.Text = "WARNING: Nessuna faccia rilevata";
                             Debug.WriteLine("WARNING: No face detected in this image.");
                             break;
                     }
                 }
                 catch (FaceAPIException faceAPIEx)
                 {
+                    this.MexBenvenuto.Text = "Eccezione: " + faceAPIEx.ErrorMessage;
                     Debug.WriteLine("FaceAPIException in IsFaceInWhitelist(): " + faceAPIEx.ErrorMessage);
                 }
                 catch
@@ -301,12 +304,14 @@ namespace FacialRecognitionDoor
                 {
                     // Otherwise, inform user that they were not recognized by the system
                     await speech.Read(SpeechContants.VisitorNotRecognizedMessage);
-                    this.MexBenvenuto.Inlines.Clear();
-                    this.MexBenvenuto.Text = "Non ti conosco";
-                    this.MexBenvenuto.Visibility = Visibility.Visible;
-                    await Task.Delay(3000);
-                    this.MexBenvenuto.Visibility = Visibility.Collapsed;
+                    if(this.MexBenvenuto.Text == "")
+                    {
+                        this.MexBenvenuto.Text = "Non ti conosco";
+                    }
                 }
+                this.MexBenvenuto.Visibility = Visibility.Visible;
+                await Task.Delay(3000);
+                this.MexBenvenuto.Visibility = Visibility.Collapsed;
             }
             else
             {
