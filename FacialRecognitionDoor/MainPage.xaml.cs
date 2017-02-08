@@ -310,8 +310,10 @@ namespace FacialRecognitionDoor
                     }
                 }
                 this.MexBenvenuto.Visibility = Visibility.Visible;
+                this.UserImage.Visibility = Visibility.Visible;
                 await Task.Delay(3000);
                 this.MexBenvenuto.Visibility = Visibility.Collapsed;
+                this.UserImage.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -354,6 +356,7 @@ namespace FacialRecognitionDoor
                     BitmapImage image = new BitmapImage();
                     await image.SetSourceAsync(photoStream);
                     UserImage.Source = image;
+                    break;
                 }
 
             }
@@ -369,37 +372,7 @@ namespace FacialRecognitionDoor
             this.MexBenvenuto.Inlines.Clear();
             this.MexBenvenuto.Text = "Welcome " + visitorName;
 
-            // If the whitelistFolder has not been opened, open it
-            if (whitelistFolder == null)
-            {
-                whitelistFolder = await KnownFolders.PicturesLibrary.CreateFolderAsync(GeneralConstants.WhiteListFolderName, CreationCollisionOption.OpenIfExists);
-            }
-
-            var subFolders = await whitelistFolder.GetFoldersAsync();
-
-            // Iterate all subfolders in whitelist
-            foreach (StorageFolder folder in subFolders)
-            {
-                //Search visitorName's photo
-                if (folder.Name.Equals(visitorName))
-                {
-                    var filesInFolder = await folder.GetFilesAsync();
-
-                    var photoStream = await filesInFolder[0].OpenAsync(FileAccessMode.Read);
-                    BitmapImage image = new BitmapImage();
-                    await image.SetSourceAsync(photoStream);
-                    UserImage.Source = image;
-                    // Active the image and text
-                    UserImage.Visibility = Visibility.Visible;
-                    MexBenvenuto.Visibility = Visibility.Visible;
-                    break;
-                }
-
-            }
-            // Wait 3s and deactive the image and text
-            await Task.Delay(3000);
-            UserImage.Visibility = Visibility.Collapsed;
-            MexBenvenuto.Visibility = Visibility.Collapsed;
+            getPhoto(visitorName);
 
             if (gpioAvailable)
             {
