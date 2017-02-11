@@ -28,13 +28,13 @@
     <AppXManifest Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-02-07T09:12:15.292</Modified>
+      <Modified>2017-02-08T20:03:37.715</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\bin\x86\Debug\FacialRecognitionDoor.exe">
       <PackagePath>entrypoint\FacialRecognitionDoor.exe</PackagePath>
-      <Modified>2017-02-07T09:12:14.842</Modified>
+      <Modified>2017-02-08T20:03:37.288</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Solving Team\.nuget\packages\Microsoft.ApplicationInsights\1.0.0\lib\portable-win81+wpa81\Microsoft.ApplicationInsights.dll">
       <PackagePath>Microsoft.ApplicationInsights.dll</PackagePath>
@@ -521,11 +521,11 @@
     <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-02-06T19:43:32.542</Modified>
+      <Modified>2017-02-08T19:56:27.727</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Solving Team\Source\Repos\MyFacialRecognition\FacialRecognitionDoor\bin\x86\Debug\Core\FacialRecognitionDoor.exe">
       <PackagePath>FacialRecognitionDoor.exe</PackagePath>
-      <Modified>2017-02-07T09:12:15.287</Modified>
+      <Modified>2017-02-08T20:03:37.710</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

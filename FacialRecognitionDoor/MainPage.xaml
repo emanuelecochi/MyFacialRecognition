@@ -57,6 +57,7 @@
         </Grid>
         <TextBlock x:Name="MexBenvenuto" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.ColumnSpan="3" FontSize="33.333" Margin="50,10,50,0" TextAlignment="Center" d:IsHidden="True"/>
         <Image x:Name="UserImage" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Grid.ColumnSpan="3" Margin="50,100,50,0"/>
+        <TextBlock x:Name="Distance" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" FontSize="33.333" Margin="28,226,2,0" TextAlignment="Center" Grid.Column="2"/>
     </Grid>
     <Page.BottomAppBar>
         <CommandBar IsOpen="True" IsSticky="True" IsEnabled="True" Foreground="#FF7C3C3C">

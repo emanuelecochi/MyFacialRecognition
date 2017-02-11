@@ -88,7 +88,7 @@ namespace FacialRecognitionDoor
                 DisabledFeedGrid.Visibility = Visibility.Collapsed;
             }
 
-            
+
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += CheckPerson_Tick;
@@ -280,6 +280,7 @@ namespace FacialRecognitionDoor
                         // Fails and catches as a FaceRecognitionException if no face is detected in the image
                         case FaceRecognitionExceptionType.NoFaceDetected:
                             this.MexBenvenuto.Text = "WARNING: Nessuna faccia rilevata";
+                            this.MexBenvenuto.Visibility = Visibility.Visible;
                             Debug.WriteLine("WARNING: No face detected in this image.");
                             break;
                     }
@@ -287,6 +288,7 @@ namespace FacialRecognitionDoor
                 catch (FaceAPIException faceAPIEx)
                 {
                     this.MexBenvenuto.Text = "Eccezione: " + faceAPIEx.ErrorMessage;
+                    this.MexBenvenuto.Visibility = Visibility.Visible;
                     Debug.WriteLine("FaceAPIException in IsFaceInWhitelist(): " + faceAPIEx.ErrorMessage);
                 }
                 catch
@@ -299,21 +301,25 @@ namespace FacialRecognitionDoor
                 {
                     // If everything went well and a visitor was recognized, unlock the door:
                     UnlockDoor(recognizedVisitors[0]);
+                    this.MexBenvenuto.Visibility = Visibility.Visible;
+                    this.UserImage.Visibility = Visibility.Visible;
                 }
                 else
                 {
                     // Otherwise, inform user that they were not recognized by the system
                     await speech.Read(SpeechContants.VisitorNotRecognizedMessage);
-                    if(this.MexBenvenuto.Text == "")
+                    if (this.MexBenvenuto.Text == "")
                     {
                         this.MexBenvenuto.Text = "Non ti conosco";
+                        this.MexBenvenuto.Visibility = Visibility.Visible;
                     }
                 }
-                this.MexBenvenuto.Visibility = Visibility.Visible;
-                this.UserImage.Visibility = Visibility.Visible;
-                await Task.Delay(3000);
+
+                await Task.Delay(5000);
                 this.MexBenvenuto.Visibility = Visibility.Collapsed;
                 this.UserImage.Visibility = Visibility.Collapsed;
+                this.UserImage.Source = null;
+                this.MexBenvenuto.Text = "";
             }
             else
             {
@@ -475,45 +481,6 @@ namespace FacialRecognitionDoor
             Application.Current.Exit();
         }
 
-        
-        private async void UpdateDistance_Tick(object sender, object e)
-        {
-            var frame = Window.Current.Content as Frame;
-            if (frame.SourcePageType.Name.Equals("MainPage"))
-            {
-                gpioHelper.GetPinTrigger().Write(GpioPinValue.High);
-                await Task.Delay(10);
-                gpioHelper.GetPinTrigger().Write(GpioPinValue.Low);
-                while (gpioHelper.GetPinEcho().Read() == GpioPinValue.Low){ }
-                sw.Restart();
-
-                while (gpioHelper.GetPinEcho().Read() == GpioPinValue.High) { }
-                sw.Stop();
-
-                var elapsed = sw.Elapsed.TotalSeconds;
-                var distance = elapsed * 34000;
-
-                distance /= 2;
-
-                if (!currentlyUpdatingWhitelist && distance < GeneralConstants.distancePersonFromWebCam && elapsed < 0.038)
-                {
-                    if (!isPersonNear)
-                    {
-                        isPersonNear = true;
-                        timer.Stop();
-                        Debug.WriteLine("Persona vicina");
-                        await DoorbellPressed();
-                        timer.Start();
-                    }
-                }
-                else
-                {
-                    isPersonNear = false;
-                }
-                Debug.WriteLine("Distance: " + distance + " cm");
-            }
-            
-        }
 
         private async void CheckPerson_Tick(object sender, object e)
         {
@@ -539,9 +506,18 @@ namespace FacialRecognitionDoor
                         isPersonNear = false;
                     }
                     Debug.WriteLine("Distance: " + distance + " cm");
+                    this.Distance.Inlines.Clear();
+                    this.Distance.Text = distance + " cm";
+                }
+                else
+                {
+                    isPersonNear = false;
+                    Debug.WriteLine("Distance: Fuori portata");
+                    this.Distance.Inlines.Clear();
+                    this.Distance.Text = "Fuori portata";
                 }
             }
         }
+
     }
-    
 }

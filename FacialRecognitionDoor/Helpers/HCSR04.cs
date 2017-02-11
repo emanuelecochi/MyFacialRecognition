@@ -61,7 +61,7 @@ namespace FacialRecognitionDoor.Helpers
         public double GetDistance()
         {
             ManualResetEvent mre = new ManualResetEvent(false);
-            mre.WaitOne(500);
+            //mre.WaitOne(500);
             timeWatcher.Reset();
             //Send pulse
             this.triggerPin.Write(GpioPinValue.High);
