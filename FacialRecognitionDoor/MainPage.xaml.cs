@@ -17,6 +17,9 @@ using Microsoft.ProjectOxford.Face;
 using Windows.UI.Xaml.Documents;
 using Windows.Media.SpeechSynthesis;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
+using Windows.Storage.Streams;
+using System.IO;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -270,8 +273,8 @@ namespace FacialRecognitionDoor
                 try
                 {
                     // Oxford determines whether or not the visitor is on the Whitelist and returns true if so
-                    recognizedVisitors = await OxfordFaceAPIHelper.IsFaceInWhitelist(image);
                     this.MexBenvenuto.Inlines.Clear();
+                    recognizedVisitors = await OxfordFaceAPIHelper.IsFaceInWhitelist(image);
                 }
                 catch (FaceRecognitionException fe)
                 {
@@ -296,13 +299,26 @@ namespace FacialRecognitionDoor
                     // General error. This can happen if there are no visitors authorized in the whitelist
                     Debug.WriteLine("WARNING: Oxford just threw a general expception.");
                 }
-
+                AnalysingVisitorGrid.Visibility = Visibility.Collapsed;
                 if (recognizedVisitors.Count > 0)
                 {
                     // If everything went well and a visitor was recognized, unlock the door:
-                    UnlockDoor(recognizedVisitors[0]);
+                    String name = recognizedVisitors[0];
+                    UnlockDoor(name);
+                    foreach(var visitor in whitelistedVisitors)
+                    {
+                        if(visitor.Name == name)
+                        {
+                            Items.Clear();
+                            foreach(var lineInfo in visitor.Info)
+                            {
+                                Items.Add(lineInfo.Key + ": " + lineInfo.Value);
+                            }
+                        }
+                    }
                     this.MexBenvenuto.Visibility = Visibility.Visible;
                     this.UserImage.Visibility = Visibility.Visible;
+                    this.ListaInfo.Visibility = Visibility.Visible;
                 }
                 else
                 {
@@ -318,6 +334,7 @@ namespace FacialRecognitionDoor
                 await Task.Delay(5000);
                 this.MexBenvenuto.Visibility = Visibility.Collapsed;
                 this.UserImage.Visibility = Visibility.Collapsed;
+                this.ListaInfo.Visibility = Visibility.Collapsed;
                 this.UserImage.Source = null;
                 this.MexBenvenuto.Text = "";
             }
@@ -338,7 +355,13 @@ namespace FacialRecognitionDoor
             }
 
             doorbellJustPressed = false;
-            AnalysingVisitorGrid.Visibility = Visibility.Collapsed;
+        }
+
+        private ObservableCollection<string> _items = new ObservableCollection<string>();
+
+        public ObservableCollection<string> Items
+        {
+            get { return this._items; }
         }
 
         private async void getPhoto(String name)
@@ -437,12 +460,33 @@ namespace FacialRecognitionDoor
             {
                 string visitorName = folder.Name;
                 var filesInFolder = await folder.GetFilesAsync();
-
-                var photoStream = await filesInFolder[0].OpenAsync(FileAccessMode.Read);
+                Dictionary<string, string> info = new Dictionary<string, string>();
+                foreach (StorageFile f in filesInFolder)
+                {
+                    if(f.FileType.ToUpper() == ".TXT" && f.Name.ToUpper() == "INFO.TXT" && folder.Name.Equals(visitorName))
+                    {
+                        var readFile = await FileIO.ReadLinesAsync(f);
+                        String[] lineFile;
+                        foreach (var line in readFile)
+                        {
+                            lineFile = line.Split('=');
+                            info.Add(lineFile[0], lineFile[1]);
+                        }
+                        break;
+                    }
+                }
                 BitmapImage visitorImage = new BitmapImage();
-                await visitorImage.SetSourceAsync(photoStream);
+                foreach (StorageFile f in filesInFolder)
+                {
+                    if (f.FileType.ToUpper() != ".TXT")
+                    {
+                        var photoStream = await filesInFolder[0].OpenAsync(FileAccessMode.Read);
+                        await visitorImage.SetSourceAsync(photoStream);
+                        break;
+                    }
+                }
 
-                Visitor whitelistedVisitor = new Visitor(visitorName, folder, visitorImage, visitorIDPhotoGridMaxWidth);
+                Visitor whitelistedVisitor = new Visitor(visitorName, folder, visitorImage, visitorIDPhotoGridMaxWidth,info);
 
                 whitelistedVisitors.Add(whitelistedVisitor);
             }

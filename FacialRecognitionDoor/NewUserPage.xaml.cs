@@ -7,6 +7,7 @@ using Windows.UI.Xaml.Navigation;
 using FacialRecognitionDoor.Helpers;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -117,6 +118,7 @@ namespace FacialRecognitionDoor
 
                 // Stop live camera feed
                 await webcam.StopCameraPreview();
+                
                 // Navigate back to MainPage
                 Frame.Navigate(typeof(MainPage));
             }

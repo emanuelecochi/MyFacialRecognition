@@ -69,19 +69,30 @@ namespace FacialRecognitionDoor
 
             var filesInFolder = await currentUser.ImageFolder.GetFilesAsync();
 
-            userIDImages = new Image[filesInFolder.Count];
-
+            int count = 0;
             for (int i = 0; i < filesInFolder.Count; i++)
             {
-                var photoStream = await filesInFolder[i].OpenAsync(FileAccessMode.Read);
-                BitmapImage idImage = new BitmapImage();
-                await idImage.SetSourceAsync(photoStream);
+                if (filesInFolder[i].FileType.ToUpper() != ".TXT")
+                {
+                    count++;
+                }
+            }
 
-                Image idImageControl = new Image();
-                idImageControl.Source = idImage;
-                idImageControl.MaxWidth = idImageMaxWidth;
+            userIDImages = new Image[count];
+            for (int i = 0; i < filesInFolder.Count; i++)
+            {
+                if(filesInFolder[i].FileType.ToUpper() != ".TXT")
+                {
+                    var photoStream = await filesInFolder[i].OpenAsync(FileAccessMode.Read);
+                    BitmapImage idImage = new BitmapImage();
+                    await idImage.SetSourceAsync(photoStream);
 
-                userIDImages[i] = idImageControl;
+                    Image idImageControl = new Image();
+                    idImageControl.Source = idImage;
+                    idImageControl.MaxWidth = idImageMaxWidth;
+
+                    userIDImages[i] = idImageControl;
+                }
             }
 
             PhotoGrid.ItemsSource = userIDImages;

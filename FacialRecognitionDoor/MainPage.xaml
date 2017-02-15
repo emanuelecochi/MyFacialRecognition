@@ -27,7 +27,7 @@
             </Grid.RowDefinitions>
             <Rectangle Margin="10" Stroke="White" StrokeThickness="4" Grid.RowSpan="2" d:IsHidden="True"/>
             <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center" Source="Assets/CameraIcon.png" Margin="50" d:IsHidden="True"/>
-            <TextBlock x:Name="DisabledText" TextWrapping="Wrap" Text="The live camera feed has been disabled because of hardware constraints." HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" FontSize="33.333" TextAlignment="Center" Margin="10,0" d:IsHidden="True"/>
+            <TextBlock x:Name="DisabledText" TextWrapping="Wrap" Text="" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" FontSize="33.333" TextAlignment="Center" Margin="10,0" d:IsHidden="True"/>
         </Grid>
         <StackPanel x:Name="LiveFeedPanel" Margin="0, 10" Grid.Row="0" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" d:IsHidden="True">
             <CaptureElement x:Name='WebcamFeed' Loaded="WebcamFeed_Loaded"/>
@@ -35,7 +35,7 @@
         <StackPanel x:Name="AnalysingVisitorGrid" Grid.Column="2" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed" d:IsHidden="True">
             <ProgressRing IsActive="True" Width="113" Height="80" Foreground="White" VerticalAlignment="Center" Margin="0,0,0,10"/>
             <TextBlock VerticalAlignment="Center" FontSize="26.667" Grid.Row="1" Text="Analyzing visitor..." TextWrapping="WrapWholeWords" TextAlignment="Center"/>
-            <TextBlock VerticalAlignment="Center" FontSize="21.333" Grid.Row="1" Text="This may take some time depending on your hardware." TextWrapping="WrapWholeWords" TextAlignment="Center" FontStyle="Italic"/>
+            <TextBlock VerticalAlignment="Center" FontSize="21.333" Grid.Row="1" Text="" TextWrapping="WrapWholeWords" TextAlignment="Center" FontStyle="Italic"/>
 
         </StackPanel>
 
@@ -57,12 +57,13 @@
         </Grid>
         <TextBlock x:Name="MexBenvenuto" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.ColumnSpan="3" FontSize="33.333" Margin="50,10,50,0" TextAlignment="Center" d:IsHidden="True"/>
         <Image x:Name="UserImage" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Grid.ColumnSpan="3" Margin="50,100,50,0"/>
-        <TextBlock x:Name="Distance" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" FontSize="33.333" Margin="28,226,2,0" TextAlignment="Center" Grid.Column="2"/>
+        <ListView x:Name="ListaInfo" Height="220" VerticalAlignment="Top" Margin="9,140,12,-180" Grid.Column="2" ItemsSource="{x:Bind Items}" Visibility="Visible" Grid.Row="1"/>
+        <TextBlock x:Name="Distance" Visibility="Collapsed" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" FontSize="33.333" Margin="58,226,32,0" TextAlignment="Center" Grid.Column="2"/>
     </Grid>
     <Page.BottomAppBar>
         <CommandBar IsOpen="True" IsSticky="True" IsEnabled="True" Foreground="#FF7C3C3C">
             <AppBarButton x:Name="NewUserButton" Label="Add User" Icon="Add" Foreground="#FFFFFFFF" Width="64" Click="NewUserButton_Click"/>
-            <AppBarButton x:Name="DoorbellButton" Label="Doorbell" Foreground="#FFFFFFFF" Width="64" Click="DoorbellButton_Click">
+            <AppBarButton x:Name="DoorbellButton" Label="Check" Foreground="#FFFFFFFF" Width="64" Click="DoorbellButton_Click">
                 <AppBarButton.Icon>
                     <PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Data="M10.4650821685791,11.4196882247925L11.2984371185303,11.9828414916992 11.2984371185303,19.0712509155273 8.20937538146973,19.0712509155273 8.20937538146973,18.2379112243652 10.4650821685791,18.2379112243652 10.4650821685791,11.4196882247925z M5.91997575759888,9.44459342956543L5.3645715713501,10 5.91997575759888,10.5554065704346 6.4753794670105,10 5.91997575759888,9.44459342956543z M13.3438606262207,8.08500003814697L13.3438606262207,9.18812656402588 15.7143745422363,9.18812656402588 15.7143745422363,11.2263736724854 13.3438606262207,11.2263736724854 13.3438606262207,12.3303127288818 10.2012500762939,10.2074680328369 13.3438606262207,8.08500003814697z M8.20937538146973,1.20656251907349L11.2984371185303,1.20656251907349 11.2984371185303,8.43277740478516 10.4650821685791,8.99593734741211 10.4650821685791,2.03990983963013 8.20937538146973,2.03990983963013 8.20937538146973,1.20656251907349z M7.58437538146973,0L7.58437538146973,20 0,18.75 0,1.25 7.58437538146973,0z" />
                 </AppBarButton.Icon>

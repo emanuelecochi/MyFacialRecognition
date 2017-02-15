@@ -94,7 +94,14 @@ namespace FacialRecognitionDoor.Helpers
             // Acquires instance of Oxford SDK controller
             FaceApiRecognizer sdkController = FaceApiRecognizer.Instance;
             // Asynchronously remove user from whitelist
-            await sdkController.RemovePersonFromWhitelistAsync(name);
+            try
+            {
+                await sdkController.RemovePersonFromWhitelistAsync(name);
+            }
+            catch (FaceAPIException fe)
+            {
+                Debug.WriteLine("FaceAPIException in RemoveUserFromWhitelist: " + fe.ErrorMessage);
+            }
         }
 
         /// <summary>

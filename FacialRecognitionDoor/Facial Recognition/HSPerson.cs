@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace FacialRecognitionDoor.FacialRecognition
 {
@@ -13,6 +14,8 @@ namespace FacialRecognitionDoor.FacialRecognition
         /// Name of the person
         /// </summary>
         public string Name { get; set; }
+
+
 
         /// <summary>
         /// The image folder

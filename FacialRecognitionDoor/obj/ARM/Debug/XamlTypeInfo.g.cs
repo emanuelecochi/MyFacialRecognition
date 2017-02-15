@@ -132,19 +132,27 @@ namespace FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo
 
         private void InitTypeTables()
         {
-            _typeNameTable = new string[5];
+            _typeNameTable = new string[9];
             _typeNameTable[0] = "FacialRecognitionDoor.MainPage";
             _typeNameTable[1] = "Windows.UI.Xaml.Controls.Page";
             _typeNameTable[2] = "Windows.UI.Xaml.Controls.UserControl";
-            _typeNameTable[3] = "FacialRecognitionDoor.NewUserPage";
-            _typeNameTable[4] = "FacialRecognitionDoor.UserProfilePage";
+            _typeNameTable[3] = "System.Collections.ObjectModel.ObservableCollection`1<String>";
+            _typeNameTable[4] = "System.Collections.ObjectModel.Collection`1<String>";
+            _typeNameTable[5] = "Object";
+            _typeNameTable[6] = "String";
+            _typeNameTable[7] = "FacialRecognitionDoor.NewUserPage";
+            _typeNameTable[8] = "FacialRecognitionDoor.UserProfilePage";
 
-            _typeTable = new global::System.Type[5];
+            _typeTable = new global::System.Type[9];
             _typeTable[0] = typeof(global::FacialRecognitionDoor.MainPage);
             _typeTable[1] = typeof(global::Windows.UI.Xaml.Controls.Page);
             _typeTable[2] = typeof(global::Windows.UI.Xaml.Controls.UserControl);
-            _typeTable[3] = typeof(global::FacialRecognitionDoor.NewUserPage);
-            _typeTable[4] = typeof(global::FacialRecognitionDoor.UserProfilePage);
+            _typeTable[3] = typeof(global::System.Collections.ObjectModel.ObservableCollection<global::System.String>);
+            _typeTable[4] = typeof(global::System.Collections.ObjectModel.Collection<global::System.String>);
+            _typeTable[5] = typeof(global::System.Object);
+            _typeTable[6] = typeof(global::System.String);
+            _typeTable[7] = typeof(global::FacialRecognitionDoor.NewUserPage);
+            _typeTable[8] = typeof(global::FacialRecognitionDoor.UserProfilePage);
         }
 
         private int LookupTypeIndexByName(string typeName)
@@ -180,8 +188,22 @@ namespace FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo
         }
 
         private object Activate_0_MainPage() { return new global::FacialRecognitionDoor.MainPage(); }
-        private object Activate_3_NewUserPage() { return new global::FacialRecognitionDoor.NewUserPage(); }
-        private object Activate_4_UserProfilePage() { return new global::FacialRecognitionDoor.UserProfilePage(); }
+        private object Activate_3_ObservableCollection() { return new global::System.Collections.ObjectModel.ObservableCollection<global::System.String>(); }
+        private object Activate_4_Collection() { return new global::System.Collections.ObjectModel.Collection<global::System.String>(); }
+        private object Activate_7_NewUserPage() { return new global::FacialRecognitionDoor.NewUserPage(); }
+        private object Activate_8_UserProfilePage() { return new global::FacialRecognitionDoor.UserProfilePage(); }
+        private void VectorAdd_3_ObservableCollection(object instance, object item)
+        {
+            var collection = (global::System.Collections.Generic.ICollection<global::System.String>)instance;
+            var newItem = (global::System.String)item;
+            collection.Add(newItem);
+        }
+        private void VectorAdd_4_Collection(object instance, object item)
+        {
+            var collection = (global::System.Collections.Generic.ICollection<global::System.String>)instance;
+            var newItem = (global::System.String)item;
+            collection.Add(newItem);
+        }
 
         private global::Windows.UI.Xaml.Markup.IXamlType CreateXamlType(int typeIndex)
         {
@@ -196,6 +218,7 @@ namespace FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo
             case 0:   //  FacialRecognitionDoor.MainPage
                 userType = new global::FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
                 userType.Activator = Activate_0_MainPage;
+                userType.AddMemberName("Items");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
@@ -208,16 +231,38 @@ namespace FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo
                 xamlType = new global::FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 3:   //  FacialRecognitionDoor.NewUserPage
+            case 3:   //  System.Collections.ObjectModel.ObservableCollection`1<String>
+                userType = new global::FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.Collections.ObjectModel.Collection`1<String>"));
+                userType.CollectionAdd = VectorAdd_3_ObservableCollection;
+                userType.SetIsReturnTypeStub();
+                xamlType = userType;
+                break;
+
+            case 4:   //  System.Collections.ObjectModel.Collection`1<String>
+                userType = new global::FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType.Activator = Activate_4_Collection;
+                userType.CollectionAdd = VectorAdd_4_Collection;
+                xamlType = userType;
+                break;
+
+            case 5:   //  Object
+                xamlType = new global::FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 6:   //  String
+                xamlType = new global::FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 7:   //  FacialRecognitionDoor.NewUserPage
                 userType = new global::FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_3_NewUserPage;
+                userType.Activator = Activate_7_NewUserPage;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 4:   //  FacialRecognitionDoor.UserProfilePage
+            case 8:   //  FacialRecognitionDoor.UserProfilePage
                 userType = new global::FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_4_UserProfilePage;
+                userType.Activator = Activate_8_UserProfilePage;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
@@ -226,11 +271,26 @@ namespace FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo
         }
 
 
+        private object get_0_MainPage_Items(object instance)
+        {
+            var that = (global::FacialRecognitionDoor.MainPage)instance;
+            return that.Items;
+        }
 
         private global::Windows.UI.Xaml.Markup.IXamlMember CreateXamlMember(string longMemberName)
         {
             global::FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo.XamlMember xamlMember = null;
-            // No Local Properties
+            global::FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo.XamlUserType userType;
+
+            switch (longMemberName)
+            {
+            case "FacialRecognitionDoor.MainPage.Items":
+                userType = (global::FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo.XamlUserType)GetXamlTypeByName("FacialRecognitionDoor.MainPage");
+                xamlMember = new global::FacialRecognitionDoor.FacialRecognitionDoor_XamlTypeInfo.XamlMember(this, "Items", "System.Collections.ObjectModel.ObservableCollection`1<String>");
+                xamlMember.Getter = get_0_MainPage_Items;
+                xamlMember.SetIsReadOnly();
+                break;
+            }
             return xamlMember;
         }
     }

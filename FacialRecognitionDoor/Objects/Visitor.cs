@@ -1,4 +1,5 @@
-﻿using Windows.Storage;
+﻿using System.Collections.Generic;
+using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace FacialRecognitionDoor.Objects
@@ -12,6 +13,8 @@ namespace FacialRecognitionDoor.Objects
         /// Name of the person
         /// </summary>
         public string Name { get; set; }
+
+        public Dictionary<string, string> Info { get; set;}
 
         /// <summary>
         /// The image folder
@@ -31,12 +34,13 @@ namespace FacialRecognitionDoor.Objects
         /// <summary>
         /// Initializes a new visitor object with relevant information
         /// </summary>
-        public Visitor(string name, StorageFolder imageFolder, BitmapImage image, double maxWidth)
+        public Visitor(string name, StorageFolder imageFolder, BitmapImage image, double maxWidth, Dictionary<string,string> info)
         {
             Name = name;
             ImageFolder = imageFolder;
             Image = image;
             MaxWidth = maxWidth;
+            Info = info;
         }
     }
 }

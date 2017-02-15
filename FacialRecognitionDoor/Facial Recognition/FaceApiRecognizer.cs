@@ -195,11 +195,13 @@ namespace FacialRecognitionDoor.FacialRecognition
                     Debug.WriteLine("BuildWhiteList: Processing " + file.Path);
                     try
                     {
-                        
-                        var faceId = await DetectFaceFromImage(file);
-                        await AddFace(personId, faceId, file.Path);
+                        if(file.FileType.ToUpper() != ".TXT")
+                        {
+                            var faceId = await DetectFaceFromImage(file);
+                            await AddFace(personId, faceId, file.Path);
 
-                        Debug.WriteLine("This image added to whitelist successfully!");
+                            Debug.WriteLine("This image added to whitelist successfully!");
+                        }
                     }
                     catch(FaceRecognitionException fe)
                     {
@@ -246,6 +248,7 @@ namespace FacialRecognitionDoor.FacialRecognition
                 using (Stream imageStream = File.OpenRead(imagePath))
                 {
                     AddPersistedFaceResult result = await _faceApiClient.AddPersonFaceAsync(WhitelistId, personId, imageStream);
+                    faceId = result.PersistedFaceId;
                 }
                 _whitelist.AddFace(personId, faceId, imagePath);
             });
@@ -397,6 +400,8 @@ namespace FacialRecognitionDoor.FacialRecognition
         {
             var ret = await _faceApiClient.CreatePersonAsync(WhitelistId, personName);
             var personId = ret.PersonId;
+
+            var filesInFolder = await personFolder.GetFilesAsync();
 
             _whitelist.AddPerson(personId, personName, personFolder.Path);
 
